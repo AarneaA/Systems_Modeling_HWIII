@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class GameController
 {
-	private static Player currentPlayer;
+	public static Player currentPlayer;
 	
 	public Restaurant restaurant;
 	public static ArrayList<Employee> workerList = new ArrayList<Employee>();

@@ -177,16 +177,20 @@ public class Restaurant
 		computeReputation(repPoints);
 	}
 	
-	public void runGame(GameController controller, Restaurant restaurant ) throws IOException
+	public int runGame(GameController controller, Restaurant restaurant ) throws IOException
 	{
 		
 		if (getBudget() <= 0){
 			endGame(controller);
+            return 0;
 		}
 		if(getDaysOpen() == 31){
 			payUtilities();
+            RankingList.writeScore(budget, controller.currentPlayer.getName());
 			endGame(controller);
-		}
+            return 0;
+
+        }
 		if(getDaysOpen() % 7 == 0){
 			paySuppliers();
 			paySalaries(controller.getWorkerList());
@@ -194,7 +198,8 @@ public class Restaurant
 		
 		if (getBudget() <= 0){
 			endGame(controller);
-		}
+            return 0;
+        }
 		
 		else{
 			System.out.println("Day : " + daysOpen + ", budget: " + budget+ ", reputation Points: "+ reputationPoints);
@@ -260,7 +265,7 @@ public class Restaurant
 			        	}
 
 			        	br = new BufferedReader(new InputStreamReader(System.in));
-				        System.out.println("\nEnter the emplyee’s name, you want to train(HIGH is max): ");
+				        System.out.println("\nEnter the emplyeeï¿½s name, you want to train(HIGH is max): ");
 				        String employeeName = br.readLine();
 			        	for(Employee e : controller.getWorkerList()){
 					        if(e.getName().equals(employeeName)){
@@ -337,16 +342,19 @@ public class Restaurant
 			}
 		}	
 		daysOpen += 1;
+		System.out.println(ingrediantsCost);
 		runGame(controller, restaurant);
-
+        return 1;
 	}
 
 	public void endGame(GameController controller )
 	{
 		System.out.println("Game over!");
-		System.out.println("Budget:" + budget);
+		System.out.println("Budget: " + budget);
 		System.out.println("Statistics: ");
 		computeClientStatistics(controller.getClientList());
+
+        RankingList.readScores();
 	}
 	
 	
