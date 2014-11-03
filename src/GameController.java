@@ -11,7 +11,15 @@ import java.util.Map;
 
 public class GameController
 {
-	public static Player currentPlayer;
+	public Player currentPlayer;
+	
+	private Barman barman;
+	private Chef chef;
+	private Waiter waiter;
+	private Client client;
+	private Beverage beverage;
+	private Dish dish;
+	
 	
 	public Restaurant restaurant;
 	public static ArrayList<Employee> workerList = new ArrayList<Employee>();
@@ -38,15 +46,15 @@ public class GameController
 		
 		for (int i = 0; i < 5; i++){
 			if(i == 3){
-				Barman barman = new Barman(employeeNames[i],employeeSurnames[i], 300, Experience.LOW);
+				barman = new Barman(employeeNames[i],employeeSurnames[i], 300, Experience.LOW);
 				workerList.add(barman);
 			}
 			else if(i == 4){
-				Chef chef = new Chef(employeeNames[i],employeeSurnames[i], 300, Experience.LOW);
+				chef = new Chef(employeeNames[i],employeeSurnames[i], 300, Experience.LOW);
 				workerList.add(chef);
 			}
 			else{
-				Waiter waiter = new Waiter(employeeNames[i],employeeSurnames[i], 200, Experience.LOW);
+				waiter = new Waiter(employeeNames[i],employeeSurnames[i], 200, Experience.LOW);
 				workerList.add(waiter);
 			}
 		}
@@ -59,7 +67,7 @@ public class GameController
 		for (int i = 0; i < 18; i++){
 			Map<Dish, Integer> orderedDishes = new HashMap<Dish, Integer>();
 			Map<Beverage, Integer> orderedBeverages = new HashMap<Beverage, Integer>();
-			Client client = new Client(clientsNames[i],clientsSurnames[i], clientTelephones[i], clientTaxCodes[i],0,0,orderedDishes,orderedBeverages);
+			client = new Client(clientsNames[i],clientsSurnames[i], clientTelephones[i], clientTaxCodes[i],0,0,orderedDishes,orderedBeverages);
 			clientList.add(client);
 			
 		}
@@ -68,7 +76,7 @@ public class GameController
 		int[] dishCalorieCounts = {3000, 1500, 1000, 2000, 3500};
 
 		for (int i = 0; i < 5; i++){
-			Dish dish = new Dish(dishNames[i],6, Quality.LOW, dishCalorieCounts[i]);
+			dish = new Dish(dishNames[i],6, Quality.LOW, dishCalorieCounts[i]);
 			menuItems.add(dish);
 		}
 		
@@ -76,7 +84,7 @@ public class GameController
 		double[] volume = {0.7, 0.5, 0.57, 0.33, 0.33};
 
 		for (int i = 0; i < 5; i++){
-			Beverage beverage = new Beverage(beverageNames[i],6, Quality.LOW, volume[i]);
+			beverage = new Beverage(beverageNames[i],6, Quality.LOW, volume[i]);
 			menuItems.add(beverage);
 		}
 		
@@ -96,7 +104,7 @@ public class GameController
 				if(e.getClass().equals(Waiter.class)){
 					System.out.print(e.getName()  + "(" + e.getExperience()+ ")" +" : ");
 					for(Table t: tableList){
-						if(t.getWaiterName().equals(e.getName())){
+						if(t.getWaiter().getName().equals(e.getName())){
 							System.out.print(t.getNumber() + ", ");
 						}
 					}
@@ -112,7 +120,7 @@ public class GameController
 	        
 	        int tableCount = 0;
 			for(Table t: tableList){
-				if(t.getWaiterName().equals(waiterName)){
+				if(t.getWaiter().getName().equals(waiterName)){
 					tableCount += 1;
 				}
 			}
@@ -123,7 +131,13 @@ public class GameController
 	        else{
 		        for(Table t: tableList){
 					if(t.getNumber() == Integer.parseInt(tableNumber)){
-						t.assignToWaiter(waiterName);
+						for(Employee e: workerList){
+							if(e.getClass().equals(Waiter.class)){
+								if(e.getName().equals(waiterName)){
+									t.assignToWaiter((Waiter) e);
+								}
+							}
+						}
 					}
 				}
 	        }

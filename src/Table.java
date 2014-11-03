@@ -6,11 +6,11 @@ public class Table
 {
 	private int number;
 	
-	private String waiterName;
+	private Waiter assignedWaiter;
 	
-	public void assignToWaiter( String waiterName )
+	public void assignToWaiter( Waiter assignedWaiter )
 	{
-		this.waiterName = waiterName;
+		this.assignedWaiter = assignedWaiter;
 	}
 
 	public int getNumber() {
@@ -21,13 +21,13 @@ public class Table
 		this.number = number;
 	}
 
-	public String getWaiterName() {
-		return waiterName;
-	}
-
-	public void setWaiterName(String waiterName) {
-		this.waiterName = waiterName;
+	public Waiter getWaiter() {
+		return assignedWaiter;
 	}
 	
+	public void setWaiter( Waiter assignedWaiter )
+	{
+		this.assignedWaiter = assignedWaiter;
+	}
 	
 }

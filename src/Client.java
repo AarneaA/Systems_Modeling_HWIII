@@ -157,11 +157,6 @@ public class Client
 		this.surname = surname;
 	}
 
-	public void computeStatistics( )
-	{
-		
-	}
-
 	public String getName() {
 		return name;
 	}

@@ -22,6 +22,18 @@ public class Restaurant
 	
 	private int ingrediantsCost = 0;
 	
+	private Table table;
+	
+	private Dish orderedDish;
+	
+	private Beverage orderedBeverage;
+	
+	private Waiter currentWaiter;
+	
+	private Barman currentBarman;
+	
+	private Chef currentChef;
+	
 	public String getName() {
 		return name;
 	}
@@ -186,7 +198,7 @@ public class Restaurant
 		}
 		if(getDaysOpen() == 31){
 			payUtilities();
-            RankingList.writeScore(budget, controller.currentPlayer.getName());
+            RankingList.writeScore(restaurant, controller.currentPlayer);
 			endGame(controller);
             return 0;
 
@@ -300,9 +312,10 @@ public class Restaurant
 		}
 		ArrayList<Table> tableList = new ArrayList<Table>();
 		for(int i = 0; i < 9; i++){
-			Table table = new Table();
+			table = new Table();
 			table.setNumber(i);
-			table.setWaiterName("");
+			Waiter waiter = new Waiter("", "", 0, null);
+			table.setWaiter(waiter);
 			tableList.add(table);
 		}
 		populateTables(controller.getClientList());
@@ -313,32 +326,32 @@ public class Restaurant
 			if(c.getTableNumber() != 0){
 				Random rn = new Random();
 				rand = rn.nextInt(5);
-				Dish orderedDish = (Dish) GameController.menuItems.get(rand);
+				orderedDish = (Dish) GameController.menuItems.get(rand);
 				rn = new Random();
 				rand = rn.nextInt(5)+5;
-				Beverage orderedBeverage = (Beverage) GameController.menuItems.get(rand);
+				orderedBeverage = (Beverage) GameController.menuItems.get(rand);
 				String waiterName = "";
 				for(Table t: tableList){
 					if(t.getNumber() == c.getTableNumber()){
-						waiterName = t.getWaiterName();
+						waiterName = t.getWaiter().getName();
 						break;
 					}
 				}
-				Waiter waiter = null;
-				Chef chef = null;
-				Barman barman = null;
+				currentWaiter = null;
+				currentChef = null;
+				currentBarman = null;
 	        	for(Employee e : controller.getWorkerList()){
 			        if(e.getName().equals(waiterName)){
-			        	waiter = (Waiter) e;
+			        	currentWaiter = (Waiter) e;
 			        }
 			        else if(e.getClass().equals(Barman.class)){
-			        	barman = (Barman) e;
+			        	currentBarman = (Barman) e;
 			        }
 			        else if(e.getClass().equals(Chef.class)){
-			        	chef = (Chef) e;
+			        	currentChef = (Chef) e;
 			        }       
 	        	}
-				processOrder(orderedDish, orderedBeverage,c, waiter, chef, barman);
+				processOrder(orderedDish, orderedBeverage,c, currentWaiter, currentChef, currentBarman);
 			}
 		}	
 		daysOpen += 1;

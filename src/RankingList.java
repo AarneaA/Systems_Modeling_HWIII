@@ -6,7 +6,14 @@ import java.io.*;
 
 public class RankingList
 {
-	public static void writeScore(int budget, String name){
+	private Restaurant restaurant;
+	
+	private Player currentPlayer;
+	
+	public static void writeScore(Restaurant restaurant, Player currentPlayer){
+		
+		int budget = restaurant.getBudget();
+		String name = currentPlayer.getName();
         BufferedReader reader = null;
 
         try {
