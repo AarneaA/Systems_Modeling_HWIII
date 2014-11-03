@@ -337,7 +337,6 @@ public class Restaurant
 			}
 		}	
 		daysOpen += 1;
-		System.out.println(ingrediantsCost);
 		runGame(controller, restaurant);
 
 	}
